@@ -1,43 +1,29 @@
-/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from 'react'
 import './index.css'
 
 import {
   Column,
-  Table,
-  useReactTable,
+  ColumnDef,
   ColumnFiltersState,
+  FilterFn,
+  flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
+  getFacetedMinMaxValues,
   getFacetedRowModel,
   getFacetedUniqueValues,
-  getFacetedMinMaxValues,
+  getFilteredRowModel,
   getPaginationRowModel,
-  sortingFns,
   getSortedRowModel,
-  FilterFn,
   SortingFn,
-  ColumnDef,
-  flexRender,
+  sortingFns,
+  Table,
+  useReactTable
 } from '@tanstack/react-table'
 
-import {
-  RankingInfo,
-  rankItem,
-  compareItems,
-} from '@tanstack/match-sorter-utils'
+import { RankingInfo, rankItem } from '@tanstack/match-sorter-utils'
 
-import { makeData, Person } from './makeData'
 import { Button } from '..'
+import { makeData, Person } from './makeData'
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -54,7 +40,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
   // Store the itemRank info
   addMeta({
-    itemRank,
+    itemRank
   })
 
   // Return if the item should be filtered in/out
@@ -62,18 +48,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-  let dir = 0
-
-  // Only sort by rank if the column has ranking information
-  if (rowA.columnFiltersMeta[columnId]) {
-    dir = compareItems(
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!
-    )
-  }
-
-  // Provide an alphanumeric fallback for when the item ranks are equal
-  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir
+  return sortingFns.alphanumeric(rowA, rowB, columnId)
 }
 
 const Table = () => {
@@ -88,39 +63,39 @@ const Table = () => {
     () => [
       {
         header: 'Name',
-        footer: props => props.column.id,
+        footer: (props) => props.column?.id,
         columns: [
           {
             accessorKey: 'firstName',
-            cell: info => info.getValue(),
-            footer: props => props.column.id,
+            cell: (info) => info.getValue(),
+            footer: (props) => props.column?.id
           },
           {
-            accessorFn: row => row.lastName,
+            accessorFn: (row) => row.lastName,
             id: 'lastName',
-            cell: info => info.getValue(),
+            cell: (info) => info.getValue(),
             header: () => <span>Last Name</span>,
-            footer: props => props.column.id,
+            footer: (props) => props.column?.id
           },
           {
-            accessorFn: row => `${row.firstName} ${row.lastName}`,
+            accessorFn: (row) => `${row.firstName} ${row.lastName}`,
             id: 'fullName',
             header: 'Full Name',
-            cell: info => info.getValue(),
-            footer: props => props.column.id,
+            cell: (info) => info.getValue(),
+            footer: (props) => props.column?.id,
             filterFn: 'fuzzy',
-            sortingFn: fuzzySort,
-          },
-        ],
+            sortingFn: fuzzySort
+          }
+        ]
       },
       {
         header: 'Info',
-        footer: props => props.column.id,
+        footer: (props) => props.column?.id,
         columns: [
           {
             accessorKey: 'age',
             header: () => 'Age',
-            footer: props => props.column.id,
+            footer: (props) => props.column?.id
           },
           {
             header: 'More Info',
@@ -128,22 +103,22 @@ const Table = () => {
               {
                 accessorKey: 'visits',
                 header: () => <span>Visits</span>,
-                footer: props => props.column.id,
+                footer: (props) => props.column?.id
               },
               {
                 accessorKey: 'status',
                 header: 'Status',
-                footer: props => props.column.id,
+                footer: (props) => props.column?.id
               },
               {
                 accessorKey: 'progress',
                 header: 'Profile Progress',
-                footer: props => props.column.id,
-              },
-            ],
-          },
-        ],
-      },
+                footer: (props) => props.column?.id
+              }
+            ]
+          }
+        ]
+      }
     ],
     []
   )
@@ -155,11 +130,11 @@ const Table = () => {
     data,
     columns,
     filterFns: {
-      fuzzy: fuzzyFilter,
+      fuzzy: fuzzyFilter
     },
     state: {
       columnFilters,
-      globalFilter,
+      globalFilter
     },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
@@ -173,7 +148,7 @@ const Table = () => {
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
     debugTable: true,
     debugHeaders: true,
-    debugColumns: false,
+    debugColumns: false
   })
 
   React.useEffect(() => {
@@ -186,11 +161,11 @@ const Table = () => {
 
   return (
     <div className="p-2">
-        <Button label="Teste button interno"></Button>
+      <Button label="Teste button interno"></Button>
       <div>
         <DebouncedInput
           value={globalFilter ?? ''}
-          onChange={value => setGlobalFilter(String(value))}
+          onChange={(value) => setGlobalFilter(String(value))}
           className="p-2 font-lg shadow border border-block"
           placeholder="Search all columns..."
         />
@@ -198,9 +173,9 @@ const Table = () => {
       <div className="h-2" />
       <table>
         <thead>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
+              {headerGroup.headers.map((header) => {
                 return (
                   <th key={header.id} colSpan={header.colSpan}>
                     {header.isPlaceholder ? null : (
@@ -210,7 +185,7 @@ const Table = () => {
                             className: header.column.getCanSort()
                               ? 'cursor-pointer select-none'
                               : '',
-                            onClick: header.column.getToggleSortingHandler(),
+                            onClick: header.column.getToggleSortingHandler()
                           }}
                         >
                           {flexRender(
@@ -219,7 +194,7 @@ const Table = () => {
                           )}
                           {{
                             asc: ' 🔼',
-                            desc: ' 🔽',
+                            desc: ' 🔽'
                           }[header.column.getIsSorted() as string] ?? null}
                         </div>
                         {header.column.getCanFilter() ? (
@@ -236,10 +211,10 @@ const Table = () => {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => {
+          {table.getRowModel().rows.map((row) => {
             return (
               <tr key={row.id}>
-                {row.getVisibleCells().map(cell => {
+                {row.getVisibleCells().map((cell) => {
                   return (
                     <td key={cell.id}>
                       {flexRender(
@@ -296,7 +271,7 @@ const Table = () => {
           <input
             type="number"
             defaultValue={table.getState().pagination.pageIndex + 1}
-            onChange={e => {
+            onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0
               table.setPageIndex(page)
             }}
@@ -305,11 +280,11 @@ const Table = () => {
         </span>
         <select
           value={table.getState().pagination.pageSize}
-          onChange={e => {
+          onChange={(e) => {
             table.setPageSize(Number(e.target.value))
           }}
         >
-          {[10, 20, 30, 40, 50].map(pageSize => (
+          {[10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
@@ -329,14 +304,14 @@ const Table = () => {
 
 function Filter({
   column,
-  table,
+  table
 }: {
   column: Column<any, unknown>
   table: Table<any>
 }) {
   const firstValue = table
     .getPreFilteredRowModel()
-    .flatRows[0]?.getValue(column.id)
+    .flatRows[0]?.getValue(column?.id)
 
   const columnFilterValue = column.getFilterValue()
 
@@ -356,7 +331,7 @@ function Filter({
           min={Number(column.getFacetedMinMaxValues()?.[0] ?? '')}
           max={Number(column.getFacetedMinMaxValues()?.[1] ?? '')}
           value={(columnFilterValue as [number, number])?.[0] ?? ''}
-          onChange={value =>
+          onChange={(value) =>
             column.setFilterValue((old: [number, number]) => [value, old?.[1]])
           }
           placeholder={`Min ${
@@ -371,7 +346,7 @@ function Filter({
           min={Number(column.getFacetedMinMaxValues()?.[0] ?? '')}
           max={Number(column.getFacetedMinMaxValues()?.[1] ?? '')}
           value={(columnFilterValue as [number, number])?.[1] ?? ''}
-          onChange={value =>
+          onChange={(value) =>
             column.setFilterValue((old: [number, number]) => [old?.[0], value])
           }
           placeholder={`Max ${
@@ -386,7 +361,7 @@ function Filter({
     </div>
   ) : (
     <>
-      <datalist id={column.id + 'list'}>
+      <datalist id={column?.id + 'list'}>
         {sortedUniqueValues.slice(0, 5000).map((value: any) => (
           <option value={value} key={value} />
         ))}
@@ -394,10 +369,10 @@ function Filter({
       <DebouncedInput
         type="text"
         value={(columnFilterValue ?? '') as string}
-        onChange={value => column.setFilterValue(value)}
+        onChange={(value) => column.setFilterValue(value)}
         placeholder={`Search... (${column.getFacetedUniqueValues().size})`}
         className="w-36 border shadow rounded"
-        list={column.id + 'list'}
+        list={column?.id + 'list'}
       />
       <div className="h-1" />
     </>
@@ -430,7 +405,11 @@ function DebouncedInput({
   }, [value])
 
   return (
-    <input {...props} value={value} onChange={e => setValue(e.target.value)} />
+    <input
+      {...props}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
   )
 }
 

@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 export type Person = {
   firstName: string
   lastName: string
@@ -20,21 +16,9 @@ const range = (len: number) => {
   return arr
 }
 
-const nameArr = [
-    'fulano1',
-    'fulano2',
-    'fulano3',
-    'fulano4'
-];
-const lastNameArr = [
-    'last1',
-    'last2',
-    'last3',
-    'last4'
-];
-const ageArr = [
-    19,20,21,24
-];
+const nameArr = ['fulano1', 'fulano2', 'fulano3', 'fulano4']
+const lastNameArr = ['last1', 'last2', 'last3', 'last4']
+const ageArr = [19, 20, 21, 24]
 
 const newPerson = (index: number): Person => {
   return {
@@ -43,7 +27,7 @@ const newPerson = (index: number): Person => {
     age: ageArr[index],
     visits: 100,
     progress: 90,
-    status: 'single',
+    status: 'single'
   }
 }
 
@@ -52,8 +36,8 @@ export function makeData(...lens: number[]) {
     const len = lens[depth]!
     return range(len).map((): Person => {
       return {
-        ...newPerson(Math.floor(Math.random()*nameArr.length)),
-        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
+        ...newPerson(Math.floor(Math.random() * nameArr.length)),
+        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined
       }
     })
   }
