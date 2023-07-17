@@ -1,4 +1,5 @@
 import React, { MouseEventHandler } from "react";
+import { StyledButton } from "./styles";
 
 export interface ButtonProps {
   label?: string;
@@ -11,12 +12,12 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <button
+    <StyledButton
       type="button"
       onClick={onClick}
       {...props}>
         {label}
-    </button>
+        </StyledButton>
   );
 };
 
