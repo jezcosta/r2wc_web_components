@@ -20,8 +20,6 @@
   "scripts": {
     "build": "tsc && vite build",
     "build:watch": "concurrently \"tsc -w\" \"vite build --watch\"",
-    "build-tsc:watch": "tsc -w",
-    "build-vite:watch": "vite build --watch",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 20",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
