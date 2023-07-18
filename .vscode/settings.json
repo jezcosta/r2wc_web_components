@@ -2,6 +2,7 @@
     "files.exclude": {
       ".husky": true,
       ".bundle": true,
+      "internals": false
     },
     "search.exclude": {
       "node_modules": true,

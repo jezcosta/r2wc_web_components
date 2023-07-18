@@ -1,25 +1,18 @@
 import r2wc from '@r2wc/react-to-web-component'
-import Button from './Button'
-import Input from './Input'
-import Table from './Table'
+import * as ReactComponents from 'components/index'
 
 customElements.define(
   'rwc-button',
-  r2wc(Button, {
+  r2wc(ReactComponents.Button, {
     props: { label: 'string', onClick: 'function' }
   })
 )
-customElements.define(
-  'rwc-table',
-  r2wc(Table, {
-    props: {}
-  })
-)
+
 customElements.define(
   'rwc-input',
-  r2wc(Input, {
+  r2wc(ReactComponents.Input, {
     props: { idTest: 'string' }
   })
 )
 
-export { Button, Table }
+export { ReactComponents }
