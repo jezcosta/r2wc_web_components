@@ -4,7 +4,7 @@ A lib for build components with ReactJS and export then as Web Components, using
 
 ## Creating a new component
 
-- Create the component inside `components` folder
+- Create the component inside `src/components` folder
 - Define the new component in file `src/index.ts` as Web component with the following structure:
 ```
 customElements.define(
